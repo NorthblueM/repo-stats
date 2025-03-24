@@ -112,7 +112,7 @@ def plot_downloads_repo(fpath, df):
     df_history.plot(x='now_day', y='tag_total', ax=ax, fontsize=fs_ax)
     ax.set_title('History', fontsize=fs_ax+1)
     ax.set_xlabel('Date', fontsize=fs_ax+1)
-    ax.set_ylabel('Number of Downloads', fontsize=fs_ax+1)
+    ax.set_ylabel('Cumulative user downloads', fontsize=fs_ax+1)
     ax.legend(['Downloads'], fontsize=fs_ax)
     
     # 标注最后一个点
@@ -134,7 +134,7 @@ def plot_downloads_repo(fpath, df):
     df_total.plot(x='tag_name', y='downloads', kind='bar', ax=ax, fontsize=fs_ax)
     ax.set_title('Total', fontsize=fs_ax+1)
     ax.set_xlabel('Version', fontsize=fs_ax+1)
-    # ax.set_ylabel('Number of Downloads', fontsize=fs_ax+1)
+    # ax.set_ylabel('Cumulative user downloads', fontsize=fs_ax+1)
     ax.legend(['Downloads'], fontsize=fs_ax)
 
     # 添加当前UTC时间到左下角
