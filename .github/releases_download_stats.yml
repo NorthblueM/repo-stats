@@ -1,0 +1,38 @@
+name: Releases Download Stats
+
+on:
+  schedule:
+    # 间隔5天运行一次，每天凌晨 00:10 运行（UTC 时间）
+    - cron: '10 0 */5 * *'
+  workflow_dispatch:
+
+jobs:
+  update_star_history:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pandas matplotlib
+
+      - name: Run script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/track_releases_download.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "Update Releases Download Stats" || echo "No changes to commit"
+          git push

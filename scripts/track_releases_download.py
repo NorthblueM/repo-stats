@@ -1,3 +1,4 @@
+import os
 import requests
 import pandas as pd
 import datetime
@@ -8,13 +9,19 @@ import matplotlib.pyplot as plt
 # plt.xkcd()不打印日志: findfont: Font family 'xkcd' not found.
 matplotlib.set_loglevel('error')
 
+# 设置请求头，使用 GITHUB_TOKEN 来避免 API 限制
+headers = {}
+token = os.getenv("GITHUB_TOKEN")
+print(f"token: {token}")
+if token:
+    headers["Authorization"] = f"token {token}"
 
 def get_all_releases(repo):
     url = f"https://api.github.com/repos/{repo}/releases"
     releases = []
     page = 1
     while True:
-        response = requests.get(url, params={'page': page, 'per_page': 100})
+        response = requests.get(url, params={'page': page, 'per_page': 100}, headers=headers)
         if response.status_code != 200:
             raise Exception(f"fail fetching: {repo}, page: {page}, status_code: {response.status_code}")
         
@@ -90,10 +97,10 @@ def plot_downloads_repo(fpath, df):
 
     # 设置画布, 两个子图, 左边history, 右边total
     plt.xkcd(scale=1, length=100, randomness=2)
-    fig, axs = plt.subplots(1, 2, figsize=(15, 6))
+    fig, axs = plt.subplots(1, 2, figsize=(13, 5))
 
     repo_name = df.iloc[0]['repo'].split('/')[1]
-    fig.suptitle(f'{repo_name} Releases Download Statistics', fontsize=16.5)
+    fig.suptitle(f'{repo_name} Releases Download Statistics', fontsize=16)
 
     # # ========== history ==========
     ax = axs[0]
@@ -141,8 +148,8 @@ def plot_downloads(fpath_svg, df):
 
 
 def _main():
-    repos = ['pFindStudio/pLink3', 'pFindStudio/pGlyco3']
-    # repos = ['pFindStudio/pLink3']
+    # repos = ['pFindStudio/pLink3', 'pFindStudio/pGlyco3']
+    repos = ['pFindStudio/pLink3']
     fpath_csv = './data/releases_download_stats.csv'
     fpath_svg = './data/releases_download_stats.svg'
 
