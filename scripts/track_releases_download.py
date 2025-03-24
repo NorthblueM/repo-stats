@@ -12,7 +12,6 @@ matplotlib.set_loglevel('error')
 # 设置请求头，使用 GITHUB_TOKEN 来避免 API 限制
 headers = {}
 token = os.getenv("GITHUB_TOKEN")
-print(f"token: {token}")
 if token:
     headers["Authorization"] = f"token {token}"
 

@@ -7,8 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  update_star_history:
+  stats_releases_download:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 关键权限配置
+      actions: read
 
     steps:
       - name: Checkout repository
